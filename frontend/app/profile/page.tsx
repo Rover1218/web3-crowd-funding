@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { getProvider, formatEther } from "@/lib/contractUtils"
+import { useAccount } from "wagmi" // Add this import
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -10,6 +11,8 @@ import { RefreshCcw } from "lucide-react" // Add this import
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip" // Add this import
 
 export default function Profile() {
+    const { isConnected } = useAccount() // Add this hook
+    const [mounted, setMounted] = useState(false) // Add this state
     const [account, setAccount] = useState<string | null>(null)
     const [balance, setBalance] = useState<string | null>(null)
     const [avatarUrl, setAvatarUrl] = useState<string>("")
@@ -21,6 +24,10 @@ export default function Profile() {
         const randomSeed = Math.random().toString(36).substring(7)
         return `https://api.dicebear.com/7.x/${randomStyle}/svg?seed=${randomSeed}`
     }
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     useEffect(() => {
         const fetchAccountDetails = async () => {
@@ -40,6 +47,22 @@ export default function Profile() {
 
         fetchAccountDetails()
     }, [])
+
+    // Prevent hydration mismatch by not rendering until mounted
+    if (!mounted) {
+        return null;
+    }
+
+    if (!isConnected) {
+        return (
+            <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+                <div className="text-center p-6">
+                    <h1 className="text-2xl xs:text-3xl sm:text-4xl font-bold mb-4">Connect Your Wallet</h1>
+                    <p className="text-muted-foreground">Please connect your wallet to view your profile</p>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <main className="flex min-h-screen flex-col items-center justify-start p-4 sm:p-8 max-w-7xl mx-auto w-full">

@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { useAccount } from 'wagmi'
 import { ethers } from "ethers"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -24,6 +25,8 @@ type Campaign = {
 };
 
 export default function CampaignDetails({ params }: { params: { id: string } }) {
+    const { isConnected } = useAccount()
+    const [mounted, setMounted] = useState(false)
     const [campaign, setCampaign] = useState<Campaign | null>(null)
     const [contribution, setContribution] = useState("")
     const [userContribution, setUserContribution] = useState("0")
@@ -39,6 +42,10 @@ export default function CampaignDetails({ params }: { params: { id: string } }) 
         variant: 'success'
     });
     const [isContributing, setIsContributing] = useState(false)
+
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     const fetchCampaignDetails = async () => {
         try {
@@ -138,6 +145,21 @@ export default function CampaignDetails({ params }: { params: { id: string } }) 
         }
     };
 
+    if (!mounted) {
+        return null;
+    }
+
+    if (!isConnected) {
+        return (
+            <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+                <div className="text-center p-6">
+                    <h1 className="text-2xl xs:text-3xl sm:text-4xl font-bold mb-4">Connect Your Wallet</h1>
+                    <p className="text-muted-foreground">Please connect your wallet to view campaign details</p>
+                </div>
+            </div>
+        );
+    }
+
     if (!campaign) {
         return (
             <div className="min-h-screen flex items-center justify-center p-4">
@@ -224,8 +246,8 @@ export default function CampaignDetails({ params }: { params: { id: string } }) 
                                                                     onClick={fundCampaign}
                                                                     variant="default"
                                                                     className={`w-full h-10 sm:h-11 text-sm sm:text-base transition-all duration-300 border-2 ${!isExpired && !isContributing
-                                                                            ? "border-primary bg-green-600 hover:bg-yellow-500 hover:text-primary-foreground hover:scale-[1.02] text-primary shadow-sm hover:shadow-md"
-                                                                            : "border-muted bg-muted/50"
+                                                                        ? "border-primary bg-green-600 hover:bg-yellow-500 hover:text-primary-foreground hover:scale-[1.02] text-primary shadow-sm hover:shadow-md"
+                                                                        : "border-muted bg-muted/50"
                                                                         }`}
                                                                     disabled={isContributing || isExpired}
                                                                 >

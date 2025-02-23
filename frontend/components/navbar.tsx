@@ -5,33 +5,64 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Menu, X } from "lucide-react"
-import { useState } from "react"
-import { useAccount } from 'wagmi' // Add this import
+import { useState, useEffect } from "react" // Add useEffect
+import { useAccount } from 'wagmi'
 
 export function Navbar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
-  const { address } = useAccount() // Add this hook
+  const [mounted, setMounted] = useState(false) // Add mounted state
+  const { address } = useAccount()
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const isOwner = address?.toLowerCase() === "0x0B970EB36C1EC85706fDB4f0F3AEB572dFC3582b".toLowerCase()
+
+  // Base navigation links (always present)
+  const baseNavLinks = [
+    { href: "/", label: "Home" },
+    { href: "/charts", label: "Explore" },
+    { href: "/projects", label: "Projects" },
+    { href: "/profile", label: "Profile" },
+  ]
+
+  // Only add Create Campaign if mounted and isOwner
+  const navLinks = mounted && isOwner
+    ? [...baseNavLinks.slice(0, 3), { href: "/create-campaign", label: "Create Campaign" }, baseNavLinks[3]]
+    : baseNavLinks
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
   }
-
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/charts", label: "Explore" },
-    { href: "/projects", label: "Projects" },
-    ...(isOwner ? [{ href: "/create-campaign", label: "Create Campaign" }] : []),
-    { href: "/profile", label: "Profile" },
-  ]
 
   const isActive = (path: string) => {
     if (path === '/') {
       return pathname === path
     }
     return pathname?.startsWith(path)
+  }
+
+  // Don't render navigation items until mounted
+  if (!mounted) {
+    return (
+      <nav className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-40 w-full">
+        <div className="flex h-16 items-center px-4">
+          {/* Only render the logo and theme toggle while mounting */}
+          <div className="flex items-center justify-between w-full">
+            <div className="w-1/4">
+              <Link href="/" className="flex items-center space-x-2">
+                <span className="font-bold">CryptoLaunch</span>
+              </Link>
+            </div>
+            <div className="flex items-center justify-end space-x-4 w-1/4">
+              <ModeToggle />
+            </div>
+          </div>
+        </div>
+      </nav>
+    )
   }
 
   return (

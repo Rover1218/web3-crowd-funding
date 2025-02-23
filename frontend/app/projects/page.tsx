@@ -6,8 +6,10 @@ import { CampaignCard } from "@/components/campaign-card";
 import { getReadOnlyContract } from "@/lib/contractUtils";
 import type { CampaignDetails } from "@/types/campaign";
 import { Loader2 } from "lucide-react";
+import { useAccount } from "wagmi"; // Add this import
 
 export default function ProjectsPage() {
+  const { isConnected } = useAccount(); // Add this hook
   const [campaigns, setCampaigns] = useState<CampaignDetails[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -59,6 +61,17 @@ export default function ProjectsPage() {
   const activeCampaigns = campaigns.filter(c => !c.completed && !isExpired(c));
   const expiredCampaigns = campaigns.filter(c => !c.completed && isExpired(c));
   const completedCampaigns = campaigns.filter(c => c.completed);
+
+  if (!isConnected) {
+    return (
+      <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+        <div className="text-center p-6">
+          <h1 className="text-2xl xs:text-3xl sm:text-4xl font-bold mb-4">Connect Your Wallet</h1>
+          <p className="text-muted-foreground">Please connect your wallet to view campaigns</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground">
