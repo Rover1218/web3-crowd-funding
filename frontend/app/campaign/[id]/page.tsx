@@ -140,10 +140,10 @@ export default function CampaignDetails({ params }: { params: { id: string } }) 
 
     if (!campaign) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="text-center space-y-4">
-                    <Loader2 className="h-8 w-8 animate-spin mx-auto" />
-                    <p className="text-lg">Loading campaign details...</p>
+            <div className="min-h-screen flex items-center justify-center p-4">
+                <div className="text-center space-y-3">
+                    <Loader2 className="h-6 w-6 sm:h-8 sm:w-8 animate-spin mx-auto" />
+                    <p className="text-base sm:text-lg">Loading campaign details...</p>
                 </div>
             </div>
         )
@@ -157,33 +157,35 @@ export default function CampaignDetails({ params }: { params: { id: string } }) 
     return (
         <>
             <main className="min-h-screen bg-background text-foreground">
-                <div className="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="max-w-7xl mx-auto px-3 py-3 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
+                    {/* Campaign Title */}
+                    <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 sm:mb-6 px-1">{campaign.title}</h1>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 sm:gap-4 lg:gap-8">
                         {/* Main Content */}
-                        <div className="lg:col-span-2 space-y-6">
-                            <h1 className="text-4xl font-bold">{campaign.title}</h1>
-                            <Card className="p-6">
-                                <h2 className="text-xl font-semibold mb-4">About this Campaign</h2>
-                                <p className="text-muted-foreground">{campaign.description}</p>
+                        <div className="lg:col-span-2 space-y-3 sm:space-y-4 lg:space-y-6 order-2 lg:order-1">
+                            <Card className="p-3 sm:p-4 lg:p-6">
+                                <h2 className="text-base sm:text-lg lg:text-xl font-semibold mb-2 sm:mb-3">About this Campaign</h2>
+                                <p className="text-sm sm:text-base text-muted-foreground whitespace-pre-wrap">{campaign.description}</p>
                             </Card>
 
-                            <Card className="p-6">
-                                <h2 className="text-xl font-semibold mb-4">Funding Progress</h2>
-                                <Progress value={progress} className="h-4 mb-4" />
-                                <div className="flex justify-between text-sm mb-4">
+                            <Card className="p-3 sm:p-4 lg:p-6">
+                                <h2 className="text-base sm:text-lg lg:text-xl font-semibold mb-2 sm:mb-3">Funding Progress</h2>
+                                <Progress value={progress} className="h-2.5 sm:h-3 lg:h-4 mb-2 lg:mb-4" />
+                                <div className="flex justify-between text-xs sm:text-sm mb-3">
                                     <span>{formatEther(campaign.amountCollected)} ETH raised</span>
                                     <span>{formatEther(campaign.goal)} ETH goal</span>
                                 </div>
-                                <div className="grid grid-cols-2 gap-4 text-sm">
-                                    <div className="bg-muted p-4 rounded-lg">
-                                        <p className="text-muted-foreground">Campaign Status</p>
-                                        <p className="font-semibold">
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
+                                    <div className="bg-muted p-2.5 sm:p-3 lg:p-4 rounded-lg">
+                                        <p className="text-xs sm:text-sm text-muted-foreground">Campaign Status</p>
+                                        <p className="text-sm sm:text-base font-semibold mt-1">
                                             {campaign.completed ? "Completed" : campaign.goalReached ? "Goal Reached" : isExpired ? "Expired" : "Active"}
                                         </p>
                                     </div>
-                                    <div className="bg-muted p-4 rounded-lg">
-                                        <p className="text-muted-foreground">End Date</p>
-                                        <p className="font-semibold">
+                                    <div className="bg-muted p-2.5 sm:p-3 lg:p-4 rounded-lg">
+                                        <p className="text-xs sm:text-sm text-muted-foreground">End Date</p>
+                                        <p className="text-sm sm:text-base font-semibold mt-1">
                                             {new Date(Number.parseInt(campaign.deadline) * 1000).toLocaleDateString()}
                                         </p>
                                     </div>
@@ -191,18 +193,18 @@ export default function CampaignDetails({ params }: { params: { id: string } }) 
                             </Card>
                         </div>
 
-                        {/* Sidebar */}
-                        <div className="lg:col-span-1">
-                            <Card className="p-6 sticky top-8">
-                                <div className="space-y-6">
+                        {/* Sidebar - Contribution Section */}
+                        <div className="lg:col-span-1 order-1 lg:order-2 mb-4 lg:mb-0">
+                            <Card className="p-3 sm:p-4 lg:p-6 lg:sticky lg:top-8">
+                                <div className="space-y-3 sm:space-y-4">
                                     <div>
-                                        <h3 className="text-lg font-semibold mb-2">Your Contribution</h3>
-                                        <p className="text-2xl font-bold">{formatEther(userContribution)} ETH</p>
+                                        <h3 className="text-base lg:text-lg font-semibold mb-1">Your Contribution</h3>
+                                        <p className="text-lg sm:text-xl lg:text-2xl font-bold">{formatEther(userContribution)} ETH</p>
                                     </div>
 
                                     {!campaign.completed && !campaign.goalReached && (
-                                        <div className="space-y-4">
-                                            <h3 className="text-lg font-semibold">Make a Contribution</h3>
+                                        <div className="space-y-2 sm:space-y-3">
+                                            <h3 className="text-base lg:text-lg font-semibold">Make a Contribution</h3>
                                             <div className="space-y-2">
                                                 <Input
                                                     type="number"
@@ -212,6 +214,7 @@ export default function CampaignDetails({ params }: { params: { id: string } }) 
                                                     min="0"
                                                     step="0.01"
                                                     disabled={isExpired}
+                                                    className="text-sm sm:text-base h-10 sm:h-11"
                                                 />
                                                 <TooltipProvider>
                                                     <Tooltip>
@@ -220,15 +223,15 @@ export default function CampaignDetails({ params }: { params: { id: string } }) 
                                                                 <Button
                                                                     onClick={fundCampaign}
                                                                     variant="default"
-                                                                    className={`w-full transition-all duration-300 border-2 ${!isExpired && !isContributing
-                                                                        ? "border-primary bg-primary/10 hover:bg-primary hover:text-primary-foreground hover:scale-105 text-primary shadow-[0_0_15px_rgba(var(--primary),0.2)] hover:shadow-[0_0_20px_rgba(var(--primary),0.4)]"
-                                                                        : "border-muted bg-muted/50"
+                                                                    className={`w-full h-10 sm:h-11 text-sm sm:text-base transition-all duration-300 border-2 ${!isExpired && !isContributing
+                                                                            ? "border-primary bg-green-600 hover:bg-yellow-500 hover:text-primary-foreground hover:scale-[1.02] text-primary shadow-sm hover:shadow-md"
+                                                                            : "border-muted bg-muted/50"
                                                                         }`}
                                                                     disabled={isContributing || isExpired}
                                                                 >
                                                                     {isContributing ? (
                                                                         <>
-                                                                            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                                                                            <Loader2 className="mr-2 h-3 w-3 lg:h-4 lg:w-4 animate-spin" />
                                                                             Contributing...
                                                                         </>
                                                                     ) : isExpired ? (
@@ -254,7 +257,7 @@ export default function CampaignDetails({ params }: { params: { id: string } }) 
                                         <Button
                                             onClick={withdrawFunds}
                                             variant="default"
-                                            className="w-full"
+                                            className="w-full h-10 sm:h-11 text-sm sm:text-base"
                                         >
                                             Withdraw Campaign Funds
                                         </Button>
@@ -263,15 +266,14 @@ export default function CampaignDetails({ params }: { params: { id: string } }) 
                                     {!campaign.goalReached && isExpired && hasContribution && (
                                         <Button
                                             onClick={claimRefund}
-                                            variant="destructive"
-                                            className="w-full"
+                                            className="w-full h-10 sm:h-11 text-sm sm:text-base transition-all duration-300 border-2 border-destructive bg-red-600 hover:bg-red-500 text-white hover:scale-[1.02] shadow-sm hover:shadow-md"
                                         >
                                             Claim Refund
                                         </Button>
                                     )}
 
-                                    <div className="text-sm text-muted-foreground">
-                                        <p>Campaign ID: {campaign.id}</p>
+                                    <div className="text-xs sm:text-sm text-muted-foreground pt-2">
+                                        <p className="mb-1">Campaign ID: {campaign.id}</p>
                                         <p>Creator: {campaign.owner.slice(0, 6)}...{campaign.owner.slice(-4)}</p>
                                     </div>
                                 </div>

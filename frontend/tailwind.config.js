@@ -15,6 +15,10 @@ module.exports = {
                 ring: "hsl(var(--ring))",
                 background: "hsl(var(--background))",
                 foreground: "hsl(var(--foreground))" // fixed unterminated string literal
+            },
+            screens: {
+                'xs': '480px',
+                // ...other existing screens
             }
         }
     }

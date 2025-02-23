@@ -11,33 +11,33 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center">
       {/* Hero Section */}
       <div className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-20 flex flex-col md:flex-row items-center justify-between">
-          <div className="md:w-1/2 space-y-6">
-            <h1 className="text-5xl font-bold leading-tight">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-20 flex flex-col md:flex-row items-center justify-between">
+          <div className="md:w-1/2 space-y-4 sm:space-y-6 text-center md:text-left">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
               Revolutionize Your Crowdfunding with Blockchain
             </h1>
-            <p className="text-xl opacity-90">
+            <p className="text-lg sm:text-xl opacity-90">
               Launch your campaign on Sepolia testnet with instant transactions,
               complete transparency, and zero intermediaries.
             </p>
-            <div className="flex space-x-4 pt-4">
+            <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 pt-4 items-center justify-center md:justify-start">
               <ConnectWallet />
               <Link href="/create-campaign">
-                <Button variant="secondary" className="hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:scale-105">
+                <Button variant="secondary" className="w-full sm:w-auto hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:scale-105">
                   Start Your Campaign
                 </Button>
               </Link>
             </div>
           </div>
-          <div className="md:w-1/2 mt-8 md:mt-0">
-            <div className="relative w-full h-[400px] rounded-lg overflow-hidden">
+          <div className="md:w-1/2 mt-8 md:mt-0 w-full">
+            <div className="relative aspect-[16/9] w-full max-w-[500px] mx-auto">
               <Image
                 src="https://images.unsplash.com/photo-1526304640581-d334cdbbf45e"
                 alt="Crowdfunding Hero Image"
                 fill
-                style={{ objectFit: 'cover' }}
+                sizes="(max-width: 768px) 100vw, 50vw"
                 priority
-                className="rounded-lg"
+                className="rounded-lg object-cover"
               />
             </div>
           </div>
@@ -45,8 +45,8 @@ export default function Home() {
       </div>
 
       {/* Stats Section */}
-      <div className="w-full bg-secondary py-12">
-        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div className="w-full bg-secondary py-8 sm:py-12">
+        <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8">
           <div className="text-center">
             <h3 className="text-4xl font-bold">100%</h3>
             <p className="text-muted-foreground">Secure Transactions</p>
@@ -63,10 +63,10 @@ export default function Home() {
       </div>
 
       {/* How It Works Section */}
-      <div className="w-full py-16 bg-white dark:bg-gray-900">
+      <div className="w-full py-12 sm:py-16 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">How It Works</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             <div className="text-center p-6">
               <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">1</div>
               <h3 className="text-xl font-semibold mb-3">Connect Wallet</h3>
@@ -92,10 +92,10 @@ export default function Home() {
       </div>
 
       {/* Features Section */}
-      <div className="w-full py-16">
+      <div className="w-full py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Why Choose CryptoLaunch?</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Why Choose CryptoLaunch?</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             <div className="p-6 border rounded-lg">
               <h3 className="text-xl font-semibold mb-3">Blockchain Powered</h3>
               <p className="text-muted-foreground">Leverage the security and transparency of Ethereum network for your campaigns.</p>
@@ -113,14 +113,14 @@ export default function Home() {
       </div>
 
       {/* Projects CTA Section */}
-      <div className="w-full py-16 bg-secondary/50">
+      <div className="w-full py-12 sm:py-16 bg-secondary/50">
         <div className="max-w-3xl mx-auto text-center px-4">
-          <h2 className="text-3xl font-bold mb-4">Explore Amazing Projects</h2>
-          <p className="mb-8 text-muted-foreground">Discover innovative campaigns and support creative minds worldwide</p>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Explore Amazing Projects</h2>
+          <p className="mb-6 sm:mb-8 text-muted-foreground">Discover innovative campaigns and support creative minds worldwide</p>
           <Link href="/projects">
             <Button
               size="lg"
-              className="px-8 bg-blue-600 hover:bg-blue-700 text-white transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
+              className="w-full sm:w-auto px-6 sm:px-8 bg-blue-600 hover:bg-blue-700 text-white transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
             >
               View All Projects
               <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -132,13 +132,21 @@ export default function Home() {
       </div>
 
       {/* Testimonials Section */}
-      <div className="w-full py-16 bg-gray-50 dark:bg-gray-800">
+      <div className="w-full py-12 sm:py-16 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">What Our Users Say</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">What Our Users Say</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-blue-600 rounded-full mr-4"></div>
+                <div className="w-12 h-12 rounded-full mr-4 overflow-hidden">
+                  <Image
+                    src="https://img.freepik.com/free-photo/3d-illustration-cute-cartoon-character-with-glasses_1142-41044.jpg"
+                    alt="Alex Thompson Avatar"
+                    width={48}
+                    height={48}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div>
                   <h4 className="font-semibold">Alex Thompson</h4>
                   <p className="text-sm text-muted-foreground">Tech Entrepreneur</p>
@@ -148,7 +156,15 @@ export default function Home() {
             </div>
             <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-blue-600 rounded-full mr-4"></div>
+                <div className="w-12 h-12 rounded-full mr-4 overflow-hidden">
+                  <Image
+                    src="https://img.freepik.com/free-photo/3d-illustration-cartoon-character-with-glasses-bow_1142-40307.jpg"
+                    alt="Sarah Chen Avatar"
+                    width={48}
+                    height={48}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div>
                   <h4 className="font-semibold">Sarah Chen</h4>
                   <p className="text-sm text-muted-foreground">Artist & Creator</p>
@@ -158,7 +174,15 @@ export default function Home() {
             </div>
             <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-lg">
               <div className="flex items-center mb-4">
-                <div className="w-12 h-12 bg-blue-600 rounded-full mr-4"></div>
+                <div className="w-12 h-12 rounded-full mr-4 overflow-hidden">
+                  <Image
+                    src="https://img.freepik.com/free-photo/3d-illustration-cartoon-character-with-hat_1142-40327.jpg"
+                    alt="Michael Rivera Avatar"
+                    width={48}
+                    height={48}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
                 <div>
                   <h4 className="font-semibold">Michael Rivera</h4>
                   <p className="text-sm text-muted-foreground">Social Entrepreneur</p>
@@ -171,10 +195,10 @@ export default function Home() {
       </div>
 
       {/* FAQ Section */}
-      <div className="w-full py-16">
+      <div className="w-full py-12 sm:py-16">
         <div className="max-w-4xl mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">Frequently Asked Questions</h2>
-          <div className="space-y-6">
+          <h2 className="text-2xl sm:text-3xl font-bold text-center mb-8 sm:mb-12">Frequently Asked Questions</h2>
+          <div className="space-y-4 sm:space-y-6">
             <div className="bg-white dark:bg-gray-900 p-6 rounded-lg shadow-sm">
               <h3 className="text-xl font-semibold mb-2">How do I start a campaign?</h3>
               <p className="text-muted-foreground">Connect your MetaMask wallet, click on "Create Campaign", and follow the simple setup process.</p>
@@ -192,14 +216,14 @@ export default function Home() {
       </div>
 
       {/* CTA Section */}
-      <div className="w-full py-16 bg-primary text-primary-foreground">
+      <div className="w-full py-12 sm:py-16 bg-primary text-primary-foreground">
         <div className="max-w-3xl mx-auto text-center px-4">
-          <h2 className="text-3xl font-bold mb-4">Ready to Launch Your Campaign?</h2>
-          <p className="mb-8">Join the future of crowdfunding today and turn your ideas into reality.</p>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Ready to Launch Your Campaign?</h2>
+          <p className="mb-6 sm:mb-8">Join the future of crowdfunding today and turn your ideas into reality.</p>
           <Link href="/create-campaign">
             <Button
               size="lg"
-              className="border-0 bg-blue-600 text-white hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl font-semibold"
+              className="w-full sm:w-auto border-0 bg-blue-600 text-white hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl font-semibold"
             >
               Create Your Campaign
             </Button>

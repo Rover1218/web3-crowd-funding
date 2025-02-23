@@ -28,7 +28,7 @@ export function CampaignCard({
   const progress = (Number.parseFloat(amountCollected) / Number.parseFloat(goal)) * 100
 
   return (
-    <Card className="w-[350px]">
+    <Card className="w-full">
       <CardHeader>
         <CardTitle>{title}</CardTitle>
         <CardDescription>{description}</CardDescription>
