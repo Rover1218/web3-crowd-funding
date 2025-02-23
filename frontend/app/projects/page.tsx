@@ -52,42 +52,51 @@ export default function ProjectsPage() {
     fetchCampaigns().finally(() => setIsLoading(false));
   }, []);
 
-  const activeCampaigns = campaigns.filter(c => !c.completed);
+  const isExpired = (campaign: CampaignDetails) => {
+    return Number(campaign.deadline) < Date.now() / 1000;
+  };
+
+  const activeCampaigns = campaigns.filter(c => !c.completed && !isExpired(c));
+  const expiredCampaigns = campaigns.filter(c => !c.completed && isExpired(c));
   const completedCampaigns = campaigns.filter(c => c.completed);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen bg-background text-foreground">
       {/* Header Section */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-8">Discover Campaigns</h1>
+        <h1 className="text-4xl font-bold mb-8">Discover Campaigns</h1>
 
-        {/* Stats - Now 2 columns */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
-            <p className="text-sm text-gray-500 dark:text-gray-400">Total Campaigns</p>
-            <p className="text-3xl font-bold text-gray-900 dark:text-white">{campaigns.length}</p>
+        {/* Stats - Now 3 columns */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
+            <p className="text-sm text-muted-foreground">Total Campaigns</p>
+            <p className="text-3xl font-bold">{campaigns.length}</p>
           </div>
-          <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
-            <p className="text-sm text-gray-500 dark:text-gray-400">Active Campaigns</p>
-            <p className="text-3xl font-bold text-gray-900 dark:text-white">{activeCampaigns.length}</p>
+          <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
+            <p className="text-sm text-muted-foreground">Active Campaigns</p>
+            <p className="text-3xl font-bold">{activeCampaigns.length}</p>
+          </div>
+          <div className="bg-card p-6 rounded-lg shadow-sm border border-border">
+            <p className="text-sm text-muted-foreground">Expired Campaigns</p>
+            <p className="text-3xl font-bold">{expiredCampaigns.length}</p>
           </div>
         </div>
 
         {/* Content */}
         {isLoading ? (
           <div className="flex justify-center items-center min-h-[400px]">
-            <Loader2 className="h-8 w-8 animate-spin text-gray-400 dark:text-gray-500" />
+            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         ) : campaigns.length === 0 ? (
-          <div className="text-center py-12 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
-            <h3 className="text-xl font-medium text-gray-900 dark:text-white">No Campaigns Found</h3>
-            <p className="mt-2 text-gray-500 dark:text-gray-400">Be the first to start a fundraising campaign!</p>
+          <div className="text-center py-12 bg-card rounded-lg shadow-sm border border-border">
+            <h3 className="text-xl font-medium">No Campaigns Found</h3>
+            <p className="mt-2 text-muted-foreground">Be the first to start a fundraising campaign!</p>
           </div>
         ) : (
           <>
             {activeCampaigns.length > 0 && (
               <div className="mb-12">
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Active Campaigns</h2>
+                <h2 className="text-2xl font-semibold mb-6">Active Campaigns</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {activeCampaigns.map((campaign) => (
                     <CampaignCard key={campaign.id} {...campaign} />
@@ -96,9 +105,20 @@ export default function ProjectsPage() {
               </div>
             )}
 
+            {expiredCampaigns.length > 0 && (
+              <div className="mb-12">
+                <h2 className="text-2xl font-semibold mb-6">Expired Campaigns</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {expiredCampaigns.map((campaign) => (
+                    <CampaignCard key={campaign.id} {...campaign} />
+                  ))}
+                </div>
+              </div>
+            )}
+
             {completedCampaigns.length > 0 && (
               <div>
-                <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-6">Completed Campaigns</h2>
+                <h2 className="text-2xl font-semibold mb-6">Completed Campaigns</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {completedCampaigns.map((campaign) => (
                     <CampaignCard key={campaign.id} {...campaign} />

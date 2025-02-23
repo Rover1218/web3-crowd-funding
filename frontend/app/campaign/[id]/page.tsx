@@ -220,9 +220,9 @@ export default function CampaignDetails({ params }: { params: { id: string } }) 
                                                                 <Button
                                                                     onClick={fundCampaign}
                                                                     variant="default"
-                                                                    className={`w-full transition-all ${!isExpired && !isContributing
-                                                                        ? "bg-primary hover:bg-primary/90 hover:scale-105"
-                                                                        : ""
+                                                                    className={`w-full transition-all duration-300 border-2 ${!isExpired && !isContributing
+                                                                        ? "border-primary bg-primary/10 hover:bg-primary hover:text-primary-foreground hover:scale-105 text-primary shadow-[0_0_15px_rgba(var(--primary),0.2)] hover:shadow-[0_0_20px_rgba(var(--primary),0.4)]"
+                                                                        : "border-muted bg-muted/50"
                                                                         }`}
                                                                     disabled={isContributing || isExpired}
                                                                 >
