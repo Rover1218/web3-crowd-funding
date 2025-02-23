@@ -17,6 +17,7 @@ export function Navbar() {
 
   const navLinks = [
     { href: "/", label: "Home" },
+    { href: "/charts", label: "Explore" },
     { href: "/projects", label: "Projects" },
     { href: "/create-campaign", label: "Create Campaign" },
     { href: "/profile", label: "Profile" },
