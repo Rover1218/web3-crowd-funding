@@ -6,10 +6,14 @@ import { cn } from "@/lib/utils"
 import { ModeToggle } from "@/components/mode-toggle"
 import { Menu, X } from "lucide-react"
 import { useState } from "react"
+import { useAccount } from 'wagmi' // Add this import
 
 export function Navbar() {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
+  const { address } = useAccount() // Add this hook
+
+  const isOwner = address?.toLowerCase() === "0x0B970EB36C1EC85706fDB4f0F3AEB572dFC3582b".toLowerCase()
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
@@ -19,7 +23,7 @@ export function Navbar() {
     { href: "/", label: "Home" },
     { href: "/charts", label: "Explore" },
     { href: "/projects", label: "Projects" },
-    { href: "/create-campaign", label: "Create Campaign" },
+    ...(isOwner ? [{ href: "/create-campaign", label: "Create Campaign" }] : []),
     { href: "/profile", label: "Profile" },
   ]
 
@@ -35,14 +39,14 @@ export function Navbar() {
       <div className="flex h-16 items-center px-4">
         <div className="flex items-center justify-between w-full">
           {/* Logo */}
-          <div className="flex-shrink-0">
+          <div className="w-1/4">
             <Link href="/" className="flex items-center space-x-2">
               <span className="font-bold">CryptoLaunch</span>
             </Link>
           </div>
 
           {/* Desktop Navigation - Centered */}
-          <div className="hidden md:flex flex-1 justify-center">
+          <div className="hidden md:flex flex-1 justify-center w-2/4">
             <nav className="flex items-center space-x-8">
               {navLinks.map((link) => (
                 <Link
@@ -63,7 +67,7 @@ export function Navbar() {
           </div>
 
           {/* Right side controls */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center justify-end space-x-4 w-1/4">
             <ModeToggle />
             <button
               className="md:hidden"

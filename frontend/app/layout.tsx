@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { Navbar } from "@/components/navbar"
 import type React from "react" // Added import for React
 import { WalletProvider } from "@/context/WalletContext";
+import { WagmiProviderWrapper } from '@/providers/wagmi-provider'
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -37,12 +38,14 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <Navbar />
-          <WalletProvider>
-            {children}
-          </WalletProvider>
-        </ThemeProvider>
+        <WagmiProviderWrapper>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+            <Navbar />
+            <WalletProvider>
+              {children}
+            </WalletProvider>
+          </ThemeProvider>
+        </WagmiProviderWrapper>
       </body>
     </html>
   )

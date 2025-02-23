@@ -31,14 +31,14 @@ export default function Home() {
               Revolutionize Your Crowdfunding with Blockchain
             </h1>
             <p className="text-lg sm:text-xl opacity-90">
-              Launch your campaign on Sepolia testnet with instant transactions,
+              Launch your campaign for with instant transactions,
               complete transparency, and zero intermediaries.
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 pt-4 items-center justify-center md:justify-start">
               <ConnectWallet buttonClassName="bg-emerald-500 hover:bg-emerald-600 text-white" />
-              <Link href="/create-campaign">
-                <ClientButton variant="secondary" className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 transform hover:scale-105">
-                  Start Your Campaign
+              <Link href="/projects">
+                <ClientButton variant="secondary" className="w-full sm:w-auto bg-white hover:bg-white text-black transition-all duration-300 transform hover:scale-105">
+                  Explore Campaigns
                 </ClientButton>
               </Link>
             </div>
@@ -233,15 +233,21 @@ export default function Home() {
       <div className="w-full py-12 sm:py-16 bg-primary text-primary-foreground">
         <div className="max-w-3xl mx-auto text-center px-4">
           <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Ready to Launch Your Campaign?</h2>
-          <p className="mb-6 sm:mb-8">Join the future of crowdfunding today and turn your ideas into reality.</p>
-          <Link href="/create-campaign">
-            <ClientButton
-              size="lg"
-              className="w-full sm:w-auto border-0 bg-blue-600 text-white hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl font-semibold"
+          <p className="mb-4">Contact us to start your crowdfunding journey today.</p>
+          <p className="mb-6 text-lg font-semibold">📧 {" "}
+            <a
+              href="mailto:anindyakanti04@gmail.com"
+              className="text-blue-300 hover:text-blue-100 underline"
             >
-              Create Your Campaign
-            </ClientButton>
-          </Link>
+              anindyakanti04@gmail.com
+            </a>
+          </p>
+          <div className="mt-8 p-4 bg-red-500/10 border border-red-300 rounded-lg">
+            <p className="text-sm text-white">
+              <span className="font-bold">⚠️ Important Notice:</span><br />
+              Any attempt to submit false or fraudulent campaign requests will result in immediate blacklisting of the wallet address and legal action may be taken. We maintain a strict verification process to protect our community.
+            </p>
+          </div>
         </div>
       </div>
     </main>
