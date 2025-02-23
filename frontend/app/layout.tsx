@@ -4,7 +4,7 @@ import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Navbar } from "@/components/navbar"
 import type React from "react" // Added import for React
-import WalletProvider from "@/context/WalletContext";
+import { WalletProvider } from "@/context/WalletContext";
 
 const inter = Inter({ subsets: ["latin"] })
 

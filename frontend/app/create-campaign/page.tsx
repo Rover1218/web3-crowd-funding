@@ -1,14 +1,19 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { useRouter } from "next/navigation"
 import { getContract, parseEther } from "@/lib/contractUtils"
 import Modal from "@/components/modal"
+import { BrowserProvider } from "ethers"
+
+const OWNER_ADDRESS = "0x0B970EB36C1EC85706fDB4f0F3AEB572dFC3582b"
 
 export default function CreateCampaign() {
+  const [currentAddress, setCurrentAddress] = useState<string | null>(null)
+  const [isOwner, setIsOwner] = useState(false)
   const [title, setTitle] = useState("")
   const [description, setDescription] = useState("")
   const [goal, setGoal] = useState("")
@@ -18,6 +23,24 @@ export default function CreateCampaign() {
   const [modalMessage, setModalMessage] = useState("")
   const [modalVisible, setModalVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    const checkWalletConnection = async () => {
+      if (typeof window.ethereum !== 'undefined') {
+        try {
+          const provider = new BrowserProvider(window.ethereum)
+          const accounts = await provider.listAccounts()
+          const address = accounts[0].address
+          setCurrentAddress(address)
+          setIsOwner(address?.toLowerCase() === OWNER_ADDRESS.toLowerCase())
+        } catch (error) {
+          console.error("Error checking wallet:", error)
+        }
+      }
+    }
+
+    checkWalletConnection()
+  }, [])
 
   const handleCreateCampaign = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -45,6 +68,49 @@ export default function CreateCampaign() {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  if (!currentAddress) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center p-8 md:p-24">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold mb-4">Connect Your Wallet</h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            Please connect your wallet to access this page
+          </p>
+        </div>
+      </main>
+    )
+  }
+
+  if (!isOwner) {
+    return (
+      <main className="flex min-h-screen flex-col items-center justify-center p-8 md:p-24">
+        <div className="text-center max-w-2xl">
+          <h1 className="text-4xl font-bold mb-4">Restricted Access</h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            This page is only accessible to the platform owner. To create a campaign, please contact:
+          </p>
+          <a
+            href="mailto:anindyakanti04@gmail.com"
+            className="text-blue-600 hover:text-blue-700 text-xl font-medium"
+          >
+            anindyakanti04@gmail.com
+          </a>
+          <p className="mt-4 text-sm text-gray-500">
+            Please include your project details and wallet address in your email.
+          </p>
+          <div className="mt-8 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+            <p className="text-red-600 dark:text-red-400 font-medium">⚠️ Important Notice:</p>
+            <p className="text-sm text-red-500 dark:text-red-400 mt-2">
+              Any attempt to submit false or fraudulent campaign requests will result in immediate blacklisting
+              of the wallet address and legal action may be taken. We maintain a strict verification process
+              to protect our community.
+            </p>
+          </div>
+        </div>
+      </main>
+    )
   }
 
   return (

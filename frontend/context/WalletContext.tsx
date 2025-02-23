@@ -1,65 +1,40 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import { BrowserProvider } from "ethers";
+import { createContext, useContext, useState, ReactNode } from "react";
+import { WalletType, connectToWallet } from "@/utils/wallet-utils";
 
 interface WalletContextType {
     account: string | null;
-    connectWallet: () => Promise<void>;
+    connectWallet: (walletType: WalletType) => Promise<string | null>;
     disconnectWallet: () => void;
 }
 
 const WalletContext = createContext<WalletContextType>({
     account: null,
-    connectWallet: async () => { },
-    disconnectWallet: () => { }
+    connectWallet: async () => null,
+    disconnectWallet: () => { },
 });
 
 export function WalletProvider({ children }: { children: ReactNode }) {
     const [account, setAccount] = useState<string | null>(null);
 
-    const connectWallet = async () => {
-        if (typeof window.ethereum !== "undefined") {
-            try {
-                await window.ethereum.request({ method: "eth_requestAccounts" });
-                const provider = new BrowserProvider(window.ethereum);
-                const signer = await provider.getSigner();
-                const address = await signer.getAddress();
-                setAccount(address);
-                localStorage.setItem("walletConnected", "true");
-            } catch (error) {
-                console.error("Failed to connect wallet:", error);
+    const connectWallet = async (walletType: WalletType): Promise<string | null> => {
+        try {
+            const account = await connectToWallet(walletType);
+            if (account) {
+                setAccount(account);
+                return account;
             }
-        } else {
-            alert("Please install MetaMask!");
+            return null;
+        } catch (error) {
+            console.error("Error connecting to wallet:", error);
+            throw error;
         }
     };
 
     const disconnectWallet = () => {
         setAccount(null);
-        localStorage.removeItem("walletConnected");
     };
-
-    useEffect(() => {
-        const checkConnection = async () => {
-            if (localStorage.getItem("walletConnected") === "true") {
-                await connectWallet();
-            }
-        };
-        checkConnection();
-
-        window.ethereum?.on("accountsChanged", (accounts: string[]) => {
-            if (accounts.length > 0) {
-                setAccount(accounts[0]);
-            } else {
-                disconnectWallet();
-            }
-        });
-
-        return () => {
-            window.ethereum?.removeListener("accountsChanged", () => { });
-        };
-    }, []);
 
     return (
         <WalletContext.Provider value={{ account, connectWallet, disconnectWallet }}>
@@ -68,12 +43,4 @@ export function WalletProvider({ children }: { children: ReactNode }) {
     );
 }
 
-export const useWallet = () => {
-    const context = useContext(WalletContext);
-    if (!context) {
-        throw new Error("useWallet must be used within a WalletProvider");
-    }
-    return context;
-};
-
-export default WalletProvider;
+export const useWallet = () => useContext(WalletContext);

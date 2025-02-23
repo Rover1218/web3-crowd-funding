@@ -1,12 +1,26 @@
-"use client"
+'use client'
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
-import { ConnectWallet } from "../components/connect-wallet"
-import { Button } from "../components/ui/button"
 import Link from "next/link"
+import dynamic from 'next/dynamic'
+import { ConnectWallet } from "@/components/connect-wallet"
+
+const ClientButton = dynamic(() => import('@/components/client-button'), {
+  ssr: false,
+})
 
 export default function Home() {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return null
+  }
+
   return (
     <main className="flex min-h-screen flex-col items-center">
       {/* Hero Section */}
@@ -21,11 +35,11 @@ export default function Home() {
               complete transparency, and zero intermediaries.
             </p>
             <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 pt-4 items-center justify-center md:justify-start">
-              <ConnectWallet />
+              <ConnectWallet buttonClassName="bg-emerald-500 hover:bg-emerald-600 text-white" />
               <Link href="/create-campaign">
-                <Button variant="secondary" className="w-full sm:w-auto hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:scale-105">
+                <ClientButton variant="secondary" className="w-full sm:w-auto bg-orange-500 hover:bg-orange-600 text-white transition-all duration-300 transform hover:scale-105">
                   Start Your Campaign
-                </Button>
+                </ClientButton>
               </Link>
             </div>
           </div>
@@ -118,7 +132,7 @@ export default function Home() {
           <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Explore Amazing Projects</h2>
           <p className="mb-6 sm:mb-8 text-muted-foreground">Discover innovative campaigns and support creative minds worldwide</p>
           <Link href="/projects">
-            <Button
+            <ClientButton
               size="lg"
               className="w-full sm:w-auto px-6 sm:px-8 bg-blue-600 hover:bg-blue-700 text-white transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
             >
@@ -126,7 +140,7 @@ export default function Home() {
               <svg xmlns="http://www.w3.org/2000/svg" className="ml-2 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
               </svg>
-            </Button>
+            </ClientButton>
           </Link>
         </div>
       </div>
@@ -221,12 +235,12 @@ export default function Home() {
           <h2 className="text-2xl sm:text-3xl font-bold mb-3 sm:mb-4">Ready to Launch Your Campaign?</h2>
           <p className="mb-6 sm:mb-8">Join the future of crowdfunding today and turn your ideas into reality.</p>
           <Link href="/create-campaign">
-            <Button
+            <ClientButton
               size="lg"
               className="w-full sm:w-auto border-0 bg-blue-600 text-white hover:bg-white hover:text-blue-600 transition-all duration-300 transform hover:scale-105 hover:shadow-xl font-semibold"
             >
               Create Your Campaign
-            </Button>
+            </ClientButton>
           </Link>
         </div>
       </div>
